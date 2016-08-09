@@ -84,6 +84,7 @@ namespace BackgammonLogic
 
         public abstract bool CanTakeOutCheckers(Board board);
         public abstract void UpdateCheckersAtHome(Board board);
-     
+
+   
     }
 }

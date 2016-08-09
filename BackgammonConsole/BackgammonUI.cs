@@ -10,7 +10,7 @@ namespace BackgammonConsole
 {
     public class BackgammonUI
     {
-        private GameManager _gameManager = new GameManager("Black Player","White Player");
+        private IGameManager _gameManager = new GameManager("Black Player","White Player");
         private StringBuilder _stringBuilder = new StringBuilder();
         private string[,] _boardArray = new string[36, 18];
         private bool _flagIllegalMove = false;

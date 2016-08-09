@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace BackgammonLogic
 {
-    public class GameManager 
+    public class GameManager : IGameManager
     {
-        public BlackPlayer BlackPlayer { get; private set; }
-        public WhitePlayer WhitePlayer { get; private set; }
+        public Player BlackPlayer { get;  private set; }
+        public Player WhitePlayer { get;  private set; }
 
 
         public Board GameBoard { get; private set; }
@@ -28,7 +28,7 @@ namespace BackgammonLogic
             }
             BlackPlayer = new BlackPlayer(blackName, CheckerColor.BLACK);
             WhitePlayer = new WhitePlayer(whiteName, CheckerColor.WHITE);
-
+        
             GameDice = new Dice();
             GameBoard = new Board();
 
@@ -139,22 +139,7 @@ namespace BackgammonLogic
             return WhitePlayer.CanTakeOutCheckers(GameBoard);
         }
 
-        public void ResetCubes(int cubeChosed)
-        {
 
-            if (GameDice.RolledDouble == false)
-            {
-                if (GameDice.FirstCube == cubeChosed)
-                {
-                    GameDice.ResetFirstCube();
-                }
-
-                if (GameDice.SecondCube == cubeChosed)
-                {
-                    GameDice.ResetSecondCube();
-                }
-            }
-        }
         public void UpdateMoveLeft()
         {
             MoveLeft = GameDice.RolledDouble ? 4 : 2;
@@ -439,7 +424,7 @@ namespace BackgammonLogic
             CheckIsGameOver();
         }
 
-        public void CheckIsGameOver()
+        private void CheckIsGameOver()
         {
             if (BlackPlayer.NumberOfCheckerOutSide == 15 || WhitePlayer.NumberOfCheckerOutSide == 15)
             {
@@ -447,7 +432,6 @@ namespace BackgammonLogic
                 MoveLeft = 0;
             }
         }
-
         private void ResetCubeAfterTakingOutChecker(int moveLenght)
         {
             if (GameDice.FirstCube == moveLenght)
@@ -469,6 +453,22 @@ namespace BackgammonLogic
             else if (GameDice.FirstCube > moveLenght && GameDice.SecondCube > moveLenght)
             {
                 ResetCubes(Math.Min(GameDice.FirstCube, GameDice.SecondCube));
+            }
+        }
+        private void ResetCubes(int cubeChosed)
+        {
+
+            if (GameDice.RolledDouble == false)
+            {
+                if (GameDice.FirstCube == cubeChosed)
+                {
+                    GameDice.ResetFirstCube();
+                }
+
+                if (GameDice.SecondCube == cubeChosed)
+                {
+                    GameDice.ResetSecondCube();
+                }
             }
         }
     }
