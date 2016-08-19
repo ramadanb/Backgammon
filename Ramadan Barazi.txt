@@ -1,0 +1,47 @@
+*)Well done for checking arguments
+
+*)Well done for wrapping abstract methods with validation of arguments- however it would be better if you made the abstract methods protected, so that they could not be accessed outside of the validating methods.
+
+*) Player.HasAvailbleMoves (and similar methods):
+Instead of 'GetAllAvailbleMoves(board, dice).ToList().Count > 0 ? true : false;'
+Consider: 'GetAllAvailbleMoves(board, dice).Any();'
+
+*)The code in both White and Black player classes is duplicated.. consider the DRY (Dont Repeat Yourself) principle.
+Note that if your implementation has a bug, you will have to fix it twice. If you forget to fix one- you will feel the infamous "recurring bug" effect - where you swear you fixed a bug- yet it still manifests.
+Avoid repetetive code.
+
+*)Just like we spoke in class, you do not really need a class per player.
+Note that you could have easily used the 'Player.PlayerColor' property to achieve the same effect in function flow.
+Note that you can create another enum called TriangleOwnerColor which has Black White and None fields, while the PlayerColor would have only two fields - Black and White.
+This is sensible since both enums refer to different aspects of the game.
+
+You could also parametrize the start and end index in 'UpdateCheckersAtHome' and 'CanTakeOutCheckers'- making them a part of the object's state- instead of hardcoding it.
+Consider the following principle:
+Whenever modeling the real world, consider the real world.
+If you and I were to play backgammon- we would play in the same manner.
+The only difference between us is the color we play- which is a part of our state.
+Two objects in the real world which have the same properties should not be represented by different classes.
+Always adjust your application model according to the existing model when possible- stick to nature and it will make your code better.
+
+*)consider 'string.IsNullOrWhiteSpace' where applicable.
+Throw an 'ArgumentException' when dealing with strings - not 'ArgumentNullException' since you do not know that the string is indeed null.
+
+*)GameManager.GetDiceRolls is a method which returns void - consider renaming it.
+
+*)Avoid magic numbers - constant integers in the code. this hinders readability. (GameManager.GetTheWinner)
+
+*)In GameManager, you have repeated the pattern
+
+ if (BlackPlayer.IstMyTurn)
+ {
+	//do black player stuff
+ }
+ //do white player stuff
+ 
+ This could be avoided by creating a CurrentPlayer property, of type player, and invoking his methods.
+ This could also save you a lot of repeating code, such as lines 164-174 and 176-183 which are exactly the same.
+ In fact, most of the game engine's code could be cut in half, if you get rid of this kind of repeating code.
+ 
+ Keep your code DRY! (Dont Repeat Yourself!)
+ 
+*)You have a bug which allows a dice roll to yield a result of -1.
